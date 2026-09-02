@@ -1,0 +1,54 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body { overflow: hidden; width: 100vw; height: 100vh; }
+
+.escena {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1.2s ease-in-out;
+  pointer-events: none;
+}
+
+.escena.activa {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.fondo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* la imagen cubre toda la pantalla sin deformarse */
+}
+
+.clima-elemento {
+  position: absolute;
+  width: 8vmin;
+  top: clamp(55%, var(--top-calculado, 50%), 100%);
+  z-index: 2; 
+  transform-origin: bottom center;
+  transform: scale(var(--escala)) rotate(var(--rot-base));
+  animation: viento-flor 4s ease-in-out infinite;
+}
+
+@keyframes viento-flor {
+  0%, 100% { transform: scale(var(--escala)) rotate(var(--rot-base)); }
+  50%      { transform: scale(var(--escala)) rotate(calc(var(--rot-base) + 4deg)); }
+}
+/* aviso de inicio */
+.aviso-inicio {
+  position: absolute;
+  bottom: 5%;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 0.9rem;
+  animation: parpadeo 2s ease-in-out infinite;
+}
+
+@keyframes parpadeo {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
