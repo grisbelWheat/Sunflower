@@ -77,3 +77,5 @@ const viento = new GeneradorClima(campo, {
 });
 
 viento.generar();
+
+//miau
