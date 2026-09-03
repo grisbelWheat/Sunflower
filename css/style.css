@@ -15,6 +15,7 @@ body { overflow: hidden; width: 100vw; height: 100vh; }
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+  background: #f7ecd9;
 }
 
 .fondo {
@@ -51,4 +52,55 @@ body { overflow: hidden; width: 100vw; height: 100vh; }
 @keyframes parpadeo {
   0%, 100% { opacity: 0.3; }
   50% { opacity: 1; }
+}
+
+#btn-continuar {
+  position: absolute;
+  bottom: 70%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1rem 2rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+@keyframes aparecer-carta{
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.8) rotate(-3deg); }
+  60%  { opacity: 1; transform: translate(-50%, -50%) scale(1.03) rotate(1deg); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+}
+.carta {
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(320px, 50vw, 650px);
+  max-width: 80vh;
+  padding: 3rem 2rem;
+  background: #f7ecd9;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  border-radius: 4px;
+  max-height: 70vh;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.titulo-carta {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.texto-carta {
+  font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+  line-height: 1.6;
+  text-align: center;
+}
+
+#escena-carta.activa .carta {
+  animation: aparecer-carta 1.2s ease-out forwards;
+  animation-delay: 0.4s;
 }

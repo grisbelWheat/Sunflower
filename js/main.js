@@ -8,6 +8,16 @@ function cambiarEscena(idEscenaNueva) {
   nueva.classList.add('activa');
 }
 
+
+let timerAutoAvance = setTimeout(() => {
+  cambiarEscena('escena-carta');
+}, 10000); // respaldo a los 10s
+
+document.getElementById('btn-continuar').addEventListener('click', () => {
+  clearTimeout(timerAutoAvance); // cancela el respaldo, ya no hace falta
+  cambiarEscena('escena-carta');
+});
+
 // Generador de viento(por ahora)
 class GeneradorClima {
   constructor(contenedor, opciones) {
