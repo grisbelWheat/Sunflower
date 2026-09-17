@@ -8,13 +8,19 @@ const SELECTORS = {
   continueButton: '#btn-continuar',
   flowerField: '#campo-flores',
   backgroundAudio: '#audio-fondo',
+  // Duplicado de "credits" y sin uso actual. Antes de ampliar selectores, unificar este nombre
+  // evitara que una futura variante de creditos se inicialice desde referencias distintas.
   creditos: '.creditos',
   creditAudio: '#audio-creditos'
 };
 
+// La ultima escena no existe en este documento: el boton final navega a otro HTML. Mantener
+// ambas rutas sincronizadas si se incorpora una escena intermedia o se cambia la navegacion.
 const ORDEN_ESCENAS = ['escena-inicio', 'escena-carta', 'escena-creditos', 'escena-ludovico'];
 
 const TIMING = {
+  // Estos tiempos son parte de la narracion. Al agregar multimedia, coordinar su carga y sus
+  // entradas desde esta linea de tiempo, sin reemplazar las revelaciones individuales.
   autoAdvance: 120000,
   closeLetterAnimation: 1200,
   wordBaseDelay: 1.5,
@@ -63,6 +69,8 @@ function inicializarCarta() {
 
   const fragmento = document.createDocumentFragment();
 
+  // DocumentFragment evita repintados durante la creacion. Con cartas mucho mas extensas,
+  // cada palabra sigue siendo un nodo animado: conviene medir el coste antes de escalar texto.
   LETTER_TEXT.split(' ').forEach((palabra, indice, palabras) => {
     fragmento.appendChild(crearPalabraAnimada(palabra, indice));
 
@@ -79,11 +87,16 @@ function inicializarCreditos() {
 
   if (!creditos) return;
   creditos.querySelectorAll(SELECTORS.creditItems).forEach((elemento, indice) => {
+    // El delay se calcula por item, por eso imagenes y enlaces deben vivir dentro de este mismo
+    // elemento de credito. Si los datos llegan desde fuera, insertarlos como texto/atributos y
+    // no como HTML crudo para no convertir un enlace externo en una via de inyeccion.
     elemento.style.animationDelay = `${TIMING.creditBaseDelay + indice * TIMING.creditDelayStep}s`;
     elemento.addEventListener('click', (e) => {
       const rect = e.target.getBoundingClientRect();
       const x = e.clientX || (rect.left + rect.width / 2);
       const y = e.clientY || (rect.top + rect.height / 2);
+      // Un enlace navegara casi enseguida y puede ocultar este efecto. Decidir por tipo de
+      // credito si el toque prioriza la particula, abre el enlace o combina ambos con demora.
       crearParticula(x, y);
     });
   });
@@ -112,10 +125,14 @@ function inicializarControlesDeEscena() {
 
 
   const timerAutoAvance = setTimeout(() => {
+    // BUG DIFERIDO: SCENES no esta declarado, asi que tras dos minutos el avance automatico
+    // lanza ReferenceError. Usar el id de la carta o centralizar los ids antes de habilitarlo.
     cambiarEscena(SCENES.letter);
   }, TIMING.autoAdvance);
 
   setTimeout(() => {
+    // Estos temporizadores empiezan al cargar la pagina, no al entrar a cada escena. Con mas
+    // transiciones o carga multimedia podrian habilitar controles antes de su momento visual.
     if (btnContinuar) btnContinuar.disabled = false,btnContinuar.style.animationDelay=`${BUTTON_ENABLE_DELAY.continue / 1000}s`;
   }, BUTTON_ENABLE_DELAY.continue);
 
@@ -150,6 +167,9 @@ function avanzarEscena() {
 }
 
 function fundirAudio(audio, destino, duracionMs= 1000){
+  // Si el elemento de audio falta o no llega a cargar, audio.volume lanzara un error. Tambien,
+  // varias transiciones rapidas pueden solapar intervalos; al sumar pistas convendra cancelar
+  // el fundido anterior de cada canal.
   const pasos = 20;
   const delta = (destino - audio.volume) / pasos;
   let paso = 0;
@@ -171,6 +191,8 @@ function inicializarAudio() {
     if (audioIniciado || !audio) return;
 
     audio.volume = 0.6;
+    // Algunos navegadores rechazan play hasta un gesto valido. Al crecer el paisaje sonoro,
+    // mostrar una alternativa silenciosa y no reintentar cada pista por separado evitara ruido.
     audio.play().catch((err) => console.log('Audio bloqueado:', err));
     audioIniciado = true;
   }
@@ -180,6 +202,8 @@ function inicializarAudio() {
 }
 
 function audioElregreso(source){
+  // Cada cierre crea un Audio nuevo. Esta escena solo se abre una vez hoy; con reingresos o mas
+  // pistas, reutilizar canales evitara audio duplicado y objetos pendientes en memoria.
   const sound = new Audio(source);
   sound.volume = 0.0;
   sound.play().catch((err) => console.log('Audio bloqueado:', err));
@@ -194,6 +218,9 @@ class GeneradorClima {
   }
 
   crearElemento() {
+
+    // cantidad y layers deben mantenerse enteros y coherentes. Valores fraccionarios producirian
+    // distribuciones inesperadas; cientos de elementos animados afectarian sobre todo a movil.
     const cantidadPorLayer = this.opciones.cantidad / this.opciones.layers;
 
     for (let i = 0; i < cantidadPorLayer; i++) {

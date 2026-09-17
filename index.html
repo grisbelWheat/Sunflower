@@ -9,6 +9,8 @@
 </head>
 <body>
   <section id="escena-inicio" class="escena activa">
+    <!-- Si el fondo crece en resolucion o se reemplaza por video, convendra definir dimensiones
+         o una estrategia de carga para evitar un salto visual al abrir la escena. -->
     <img src="assets/fondo.png" class="fondo" alt="" aria-hidden="true">
     <button id="btn-continuar" type="button" disabled>Continuar</button>
 
@@ -32,6 +34,9 @@
     <!-- día 12 -->
     <div class="creditos">
       <h2 class="titulo-creditos">Gracias por todo :3</h2>
+      <!-- Al sumar imagenes o enlaces, conservar un unico elemento por credito: asi la entrada
+           secuencial seguira siendo item por item. Los enlaces deben ser <a> reales (no <li>
+           clicables) para teclado, foco y apertura segura de destinos externos. -->
       <ul class="lista-creditos">
         <li class="item-credito">Zorra productions</li>
         <li class="item-credito">Dibujado con Paint</li>
@@ -41,9 +46,13 @@
         <li class="item-credito">para el resto de mi vida </li>
       </ul>
     </div>
+    <!-- Si la lista incorpora multimedia alta, este boton puede competir por espacio con el
+         ultimo credito en movil; la solucion futura debe preservar el orden de revelado. -->
     <button id="btn-final" type="button" onclick="location.href='ludovico.html'">Finalizar</button>
   </section>
 
+  <!-- Los audios se descargan aparte del peso visual: al agregar pistas, decidir cuales se
+       precargan para no retrasar el primer toque ni acumular memoria en dispositivos modestos. -->
   <audio id="audio-fondo" src="assets/audio/vientito.mp3" loop></audio>
   <audio id="audio-creditos" src="assets/audio/creditos.mp3" loop></audio>
 </body>
