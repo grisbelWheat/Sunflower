@@ -26,6 +26,26 @@ function inicializarAlineacion(lista) {
   });
 }
 
+function scrollSuave(contenedor, destino, duracionMs = 900) {
+  const inicio = contenedor.scrollTop;
+  const distancia = destino - inicio;
+  const tiempoInicio = performance.now();
+
+  function paso(ahora) {
+    const transcurrido = ahora - tiempoInicio;
+    const progreso = Math.min(transcurrido / duracionMs, 1);
+    const progresoSuavizado = 1 - Math.pow(1 - progreso, 3); // ease-out cúbico
+
+    contenedor.scrollTop = inicio + distancia * progresoSuavizado;
+
+    if (progreso < 1) {
+      requestAnimationFrame(paso);
+    }
+  }
+
+  requestAnimationFrame(paso);
+}
+
 let ultimoScrollCredito = 0;
 
 function desplazarHaciaCredito(creditos, elemento) {
@@ -39,16 +59,13 @@ function desplazarHaciaCredito(creditos, elemento) {
 
   ultimoScrollCredito = ahora;
   window.setTimeout(() => {
-    const topActual = creditos.scrollTop;
-    const siguienteTop = Math.max(0, Math.min(targetTop, creditos.scrollHeight - creditos.clientHeight));
+  const topActual = creditos.scrollTop;
+  const siguienteTop = Math.max(0, Math.min(targetTop, creditos.scrollHeight - creditos.clientHeight));
 
-    if (Math.abs(topActual - siguienteTop) >= 20) {
-      creditos.scrollTo({
-        top: siguienteTop,
-        behavior: 'smooth'
-      });
-    }
-  }, 90);
+  if (Math.abs(topActual - siguienteTop) >= 20) {
+    scrollSuave(creditos, siguienteTop, 1800); // sube este número para más lento, baja para más rápido
+  }
+}, 90);
 }
 
 export function inicializarCreditos() {
