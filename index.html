@@ -5,14 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mi historia</title>
   <link rel="stylesheet" href="css/style.css">
-  <script src="js/main.js" defer></script>
+  <script src="js/main.js" type="module"></script>
 </head>
 <body>
   <section id="escena-inicio" class="escena activa">
     <!-- Si el fondo crece en resolucion o se reemplaza por video, convendra definir dimensiones
          o una estrategia de carga para evitar un salto visual al abrir la escena. -->
-    <img src="assets/fondo.png" class="fondo" alt="" aria-hidden="true">
-    <button id="btn-continuar" type="button" disabled>Continuar</button>
+    <img src="assets/fondoprueba.png" class="fondo" alt="" aria-hidden="true">
+    
+    <img src="assets/cats event/01_33.png" class="gato gato-intermedio" alt="Continuar" role="button" tabindex="0" data-transition-cat data-cat-role="intermediate">
+    <img src="assets/cats event/01_38.png" class="gato gato-final" alt="" aria-hidden="true" data-cat-role="final">
 
     <!-- flores van aquí, día 2 -->
     <div id="campo-flores" aria-hidden="true"></div>
@@ -24,8 +26,9 @@
     <div class="carta">
       <h4 class="titulo-carta">Algo</h4>
       <p class="texto-carta"></p>
-      <button id="btn-cerrar-carta" class="btn-qwq" type="button" disabled>Cerrar</button>
     </div>
+    <img src="assets/cats event/01_33.png" class="gato gato-intermedio" alt="Continuar" role="button" tabindex="0" data-transition-cat data-cat-role="intermediate">
+    <img src="assets/cats event/01_38.png" class="gato gato-final" alt="" aria-hidden="true" data-cat-role="final">
 
     <!-- día 8 -->
   </section>
@@ -37,10 +40,25 @@
       <!-- Al sumar imagenes o enlaces, conservar un unico elemento por credito: asi la entrada
            secuencial seguira siendo item por item. Los enlaces deben ser <a> reales (no <li>
            clicables) para teclado, foco y apertura segura de destinos externos. -->
-      <ul class="lista-creditos">
+      <ul class="lista-creditos" data-auto-align="alternate">
+        <li class="item-credito item-credito-media" data-align="left">
+          <img src="assets/credits items/idea base original.png" alt="Idea base original">
+        </li>
+        <li class="item-credito item-credito-media" data-align="right">
+          <img src="assets/credits items/primera flor.png" alt="Primera flor">
+        </li>
+        <li class="item-credito item-credito-media" data-align="left">
+          <img src="assets/credits items/asi se veria.png" alt="Asi se veria">
+        </li>
+        <li class="item-credito item-credito-media" data-align="right">
+          <img src="assets/credits items/sayori.jpg" alt="Sayori">
+        </li>
+        <li class="item-credito item-credito-media" data-align="left">
+          <img src="assets/credits items/asi era.png" alt="Asi era">
+        </li>
         <li class="item-credito">Zorra productions</li>
         <li class="item-credito">Dibujado con Paint</li>
-        <li class="item-credito">Sonido ...</li>
+        <li class="item-credito"><a href="https://music.youtube.com" target="_blank" rel="noopener noreferrer">Sonido disponible aqui, tocame</a></li>
         <li class="item-credito">Siempre hay algo de lo que estar agradecido, y ...</li>
         <li class="item-credito">para mi tu compañia es algo de lo que estare agradecido...</li>
         <li class="item-credito">para el resto de mi vida </li>
@@ -55,5 +73,6 @@
        precargan para no retrasar el primer toque ni acumular memoria en dispositivos modestos. -->
   <audio id="audio-fondo" src="assets/audio/vientito.mp3" loop></audio>
   <audio id="audio-creditos" src="assets/audio/creditos.mp3" loop></audio>
+  <audio id="audio-gato" src="assets/audio/click sound gato.mp3" preload="metadata"></audio>
 </body>
 </html>
